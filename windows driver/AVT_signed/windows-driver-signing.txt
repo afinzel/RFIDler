@@ -1,0 +1,15 @@
+I use a own CA to get rid of issues with unsigned drivers under Windows. To use these(self) signed drivers,
+the root and intermediate CA certificates must be imported to computer certificate store.
+
+Following commands must be run with elevated command prompt, to add certificates to computer instead of user.
+	certutil.exe -enterprise -addstore Root rootcert-AVTroot.cer
+	certutil.exe -enterprise -addstore CA intercert-AVTadmin.cer
+
+After this, the signing certificate "Marc Hefter - codesign" is accepted as valid.
+
+some additional notes:
+*	certutil is part of Windows (%windir%\System32)
+*	makecat,signtool (The needed tools for signing) are part of Windows SDK
+*	After creating/signing the catalog file, the inf MUST NOT be modified, or signature gets invalid
+*	if adding the certificates with "certificate import assistant" (by double clicking in explorer), choose
+	local machine as store location instead of current user.
